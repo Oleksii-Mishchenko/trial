@@ -37,18 +37,24 @@ jobs:
         with:
           node-version: 18
           cache: 'npm'
-          cache-dependency-path: ${{github.workspace}}/frontend/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: npm install
+        working-directory: frontend
       - name: Build
         run: npm run build
+        working-directory: frontend
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           # Upload dist repository
-          path: './dist'
+          name: frontend-dist
+          path: './frontend/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: frontend-dist
