@@ -21,15 +21,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: self-hosted
-    defaults:
-       run:
-         working-directory: ./frontend/
-    strategy:
-       matrix:
-       node-version: [18.x]
-
   # Single deploy job since we're just deploying
   deploy:
     environment:
@@ -37,6 +28,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: List files
+      run: ls -R
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Node
